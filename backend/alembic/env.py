@@ -40,9 +40,8 @@ database_url = URL.create(
     query={"charset": "utf8mb4"},
 )
 
-# config.set_main_option("sqlalchemy.url", database_url.render_as_string())
-config.set_main_option("sqlalchemy.url", 
-                       database_url.render_as_string(hide_password=False))
+# hide_password=False にして、接続文字列にパスワードを含める
+config.set_main_option("sqlalchemy.url", database_url.render_as_string(hide_password=False))
 
 # add your model's MetaData object here
 # for 'autogenerate' support
