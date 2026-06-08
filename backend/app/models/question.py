@@ -27,7 +27,7 @@ class Question(TimestampMixin, Base):
     # 問題文
     question_text: Mapped[str] = mapped_column(
         Text,
-        nullable=True,
+        nullable=False,
     )
 
     # 解説
