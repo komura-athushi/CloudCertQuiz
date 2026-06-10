@@ -17,6 +17,9 @@ class QuestionResponse(BaseModel):
     question_text: str
     choices: list[ChoiceResponse]
 
+# 質問に回答するためのリクエストモデル
+class AnswerRequest(BaseModel):
+    selected_choice_id: int
 
 class ChoiceAnswerResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
