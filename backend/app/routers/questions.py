@@ -4,7 +4,7 @@ from sqlalchemy import text
 
 from app.db.session import get_db
 from app.repositories.question_repository import QuestionRepository
-from app.schemas.question import QuestionResponse, AnswerResponse, ChoiceResponse, ChoiceAnswerResponse, QuestionAnswerResponse
+from app.schemas.question import QuestionResponse, AnswerResponse, ChoiceResponse, ChoiceAnswerResponse, QuestionAnswerResponse, AnswerRequest
 from app.usecases.get_question import GetQuestionUseCase
 from app.usecases.answer_question import AnswerQuestionUseCase, AnswerQuestionResult
 
@@ -40,7 +40,7 @@ def get_question(
 @router.post("/{question_id}/answer", response_model=AnswerResponse)
 def answer_question(
     question_id: int,
-    selected_choice_id: int,
+    request: AnswerRequest,     # JSONのリクエストボディをAnswerRequestモデルとして受け取る
     db: Session = Depends(get_db),
 ) -> AnswerResponse:
     repository = QuestionRepository(db)
@@ -49,11 +49,11 @@ def answer_question(
     try:
         result = usecase.execute(
             question_id=question_id,
-            selected_choice_id=selected_choice_id,
+            selected_choice_id=request.selected_choice_id,
         )
     except ValueError as error:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=str(error),
         )
 
