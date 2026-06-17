@@ -23,6 +23,12 @@ class Question(TimestampMixin, Base):
         primary_key=True,
         autoincrement=True,
     )
+    
+    exam_id: Mapped[int] = mapped_column(
+        mysql.BIGINT(unsigned=True),
+        ForeignKey("exams.id", ondelete="CASCADE"),
+        nullable=False,
+    )
 
     # 問題文
     question_text: Mapped[str] = mapped_column(
@@ -40,6 +46,10 @@ class Question(TimestampMixin, Base):
     choices: Mapped[list["Choice"]] = relationship(
         back_populates="question",
         cascade="all, delete-orphan",
+    )
+    
+    exam: Mapped[Exam] = relationship(
+        back_populates="questions",
     )
     
 
