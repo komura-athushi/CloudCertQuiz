@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.models.question import Question, Choice
+from app.models.question import Question
 from app.repositories.question_repository import QuestionRepository
 
 
@@ -15,8 +15,16 @@ class AnswerQuestionUseCase:
     def __init__(self, question_repository: QuestionRepository) -> None:
         self.question_repository = question_repository
 
-    def execute(self, question_id: int, selected_choice_id: int) -> AnswerQuestionResult:
-        question = self.question_repository.find_by_id(question_id)
+    def execute(
+        self,
+        exam_id: int,
+        question_id: int,
+        selected_choice_id: int,
+    ) -> AnswerQuestionResult:
+        question = self.question_repository.find_by_exam_id_and_id(
+            exam_id=exam_id,
+            question_id=question_id,
+        )
 
         if question is None:
             raise ValueError("Question not found")
